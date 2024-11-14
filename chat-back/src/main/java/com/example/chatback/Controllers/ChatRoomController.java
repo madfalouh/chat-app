@@ -31,7 +31,7 @@ public class ChatRoomController {
             return  ResponseEntity.status(401).body(null) ;
         }
     }
-
+    // TODO : add websockets
     @PostMapping("/send-message")
     public ResponseEntity<Boolean> sendMessage(@RequestBody MessageRequest messageRequest) {
       if(chatRoomService.updateChatRoomByMessage(messageRequest.chatRoom_id, messageRequest.getMessage())){
