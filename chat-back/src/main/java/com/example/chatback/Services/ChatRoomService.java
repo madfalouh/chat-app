@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -38,12 +36,12 @@ public class ChatRoomService {
         for (ChatRoom chatRoom : chatRooms) {
             User myFriend = null;
 
-            if (userId.equals(chatRoom.getFirst_user_id())) {
+            if (userId.equals(chatRoom.getFirstUserId())) {
                 // Im the first id of the chat room my friend is the 2nd id
-                myFriend = userRepository.findById(chatRoom.getSecond_user_id()).orElse(null);
-            } else if (userId.equals(chatRoom.getSecond_user_id())) {
+                myFriend = userRepository.findById(chatRoom.getSecondUserId()).orElse(null);
+            } else if (userId.equals(chatRoom.getSecondUserId())) {
                 // IIm the second id of the chat room my friend is the 1st id
-                myFriend = userRepository.findById(chatRoom.getFirst_user_id()).orElse(null);
+                myFriend = userRepository.findById(chatRoom.getFirstUserId()).orElse(null);
             }
 
             if (myFriend != null) {

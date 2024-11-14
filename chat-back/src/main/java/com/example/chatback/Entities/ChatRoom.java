@@ -1,6 +1,5 @@
 package com.example.chatback.Entities;
 
-import com.example.chatback.Dtos.MessageDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,8 +17,8 @@ public class ChatRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long first_user_id;
-    private Long second_user_id;
+    private Long firstUserId;
+    private Long secondUserId;
     @OneToMany(mappedBy = "chatRoom")
     private List<Message> messages;
 
