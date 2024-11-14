@@ -22,8 +22,6 @@ public class UserService {
         return userRepository.findByUsernameAndPassword(username , password);
     }
 
-
-
     public User saveUser(String name, String password) {
         User user = new User(null, name, password);
         return userRepository.save(user);

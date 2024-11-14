@@ -35,7 +35,10 @@ public class ChatRoomService {
 
         for (ChatRoom chatRoom : chatRooms) {
             User myFriend = null;
-
+            /*
+                Long friendId = userId.equals(chatRoom.getFirstUserId()) ? chatRoom.getSecondUserId() : chatRoom.getFirstUserId();
+                User myFriend = userRepository.findById(friendId).orElse(null);
+             */
             if (userId.equals(chatRoom.getFirstUserId())) {
                 // Im the first id of the chat room my friend is the 2nd id
                 myFriend = userRepository.findById(chatRoom.getSecondUserId()).orElse(null);
@@ -56,10 +59,23 @@ public class ChatRoomService {
         return chatRoomDtos;
     }
 
+    /*
+    public ChatRoom saveChatRoom(Long firstId, Long secondId) {
+        ChatRoom chatRoom = new ChatRoom();
+        chatRoom.setFirstUserId(firstId);
+        chatRoom.setSecondUserId(secondId);
+        return chatRoomRepository.save(chatRoom) ;
+    }
+    */
+
     public ChatRoom saveChatRoom(ChatRoom chatRoom) {
         return chatRoomRepository.save(chatRoom) ;
     }
 
+
+    /*
+        better save msgs by bulk not by single msg
+    */
     public boolean updateChatRoomByMessage(Long chatRoomId, Message newMessage)  {
             try {
                 ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(Exception::new);
