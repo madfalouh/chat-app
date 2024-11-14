@@ -1,5 +1,6 @@
 package com.example.chatback.Dtos;
 
+import com.example.chatback.Entities.Message;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,5 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 public class ChatRoomDto {
+    private String friend_username;
     private List<MessageDto> messages;
+
 }

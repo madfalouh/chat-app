@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageDto {
-    private String text;
-    //private Long id-sender
+    private Long sender_id;
+    private String content;
 }
