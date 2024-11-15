@@ -42,4 +42,16 @@ public class ChatRoomController {
       }
     }
 
+
+    // is that needed ?
+    @PostMapping("/create-room")
+    public ResponseEntity<Boolean> createRoom(@RequestBody ChatRoomDto chatRoomDto) throws Exception {
+        if(chatRoomService.saveChatRoom(chatRoomDto)  !=null ) {
+            return  ResponseEntity.ok(true) ;
+        }
+        else{
+            return  ResponseEntity.status(401).body(false) ;
+        }
+    }
+
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -23,11 +24,15 @@ public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
+    private final MessageService messageService;
 
     public List<ChatRoom> findAllByUserId(Long userId) {
         return chatRoomRepository.findChatRoomsByFirst_user_idOrSecond_user_id(userId) ;
     }
 
+    public Optional<ChatRoom> findByID(Long chatRoomId) {
+        return chatRoomRepository.findById(chatRoomId) ;
+    }
 
     public List<ChatRoomDto> getChatRoomOfTheUsers(Long userId) {
         List<ChatRoom> chatRooms = findAllByUserId(userId);
@@ -35,10 +40,7 @@ public class ChatRoomService {
 
         for (ChatRoom chatRoom : chatRooms) {
             User myFriend = null;
-            /*
-                Long friendId = userId.equals(chatRoom.getFirstUserId()) ? chatRoom.getSecondUserId() : chatRoom.getFirstUserId();
-                User myFriend = userRepository.findById(friendId).orElse(null);
-             */
+
             if (userId.equals(chatRoom.getFirstUserId())) {
                 // Im the first id of the chat room my friend is the 2nd id
                 myFriend = userRepository.findById(chatRoom.getSecondUserId()).orElse(null);
@@ -53,22 +55,27 @@ public class ChatRoomService {
                         .map(message -> new MessageDto(message.getSender_id(), message.getContent()))
                         .toList();
 
-                chatRoomDtos.add(new ChatRoomDto(myFriend.getUsername(), messageDtos));
+                chatRoomDtos.add(new ChatRoomDto(myFriend.getUsername(), messageDtos , chatRoom.getFirstUserId(), chatRoom.getSecondUserId()));
             }
         }
         return chatRoomDtos;
     }
 
-    /*
-    public ChatRoom saveChatRoom(Long firstId, Long secondId) {
-        ChatRoom chatRoom = new ChatRoom();
-        chatRoom.setFirstUserId(firstId);
-        chatRoom.setSecondUserId(secondId);
-        return chatRoomRepository.save(chatRoom) ;
-    }
-    */
 
-    public ChatRoom saveChatRoom(ChatRoom chatRoom) {
+    public ChatRoom converChatRoomDTOToChatRoom(ChatRoomDto chatRoomDto) throws Exception {
+
+        if (chatRoomDto == null) {
+            throw new Exception("Cannot convert");
+        }
+        ChatRoom chatRoom = new ChatRoom();
+        chatRoom.setFirstUserId(chatRoomDto.getFirstUserId());
+        chatRoom.setSecondUserId(chatRoomDto.getSecondUserId());
+        return chatRoom;
+    }
+
+
+    public ChatRoom saveChatRoom(ChatRoomDto chatRoomDto) throws Exception {
+        ChatRoom chatRoom =  converChatRoomDTOToChatRoom(chatRoomDto);
         return chatRoomRepository.save(chatRoom) ;
     }
 
