@@ -1,15 +1,21 @@
 <div class="form-container">
   <h2>Sign up</h2>
-  <form action="">
+  <form [formGroup]="signupForm" (ngSubmit)="signup()">
     <div class="input-container">
       <label for="">Username</label
-      ><input type="text" placeholder="Exemple : xxDarkShadow" />
+      ><input
+        formControlName="username"
+        type="text"
+        placeholder="Exemple : xxDarkShadow"
+      />
     </div>
     <div class="input-container">
-      <label for="">Password</label><input type="password" />
+      <label for="">Password</label
+      ><input formControlName="password" type="password" />
     </div>
     <div class="input-container">
-      <label for="">Confirm Password</label><input type="password" />
+      <label for="">Confirm Password</label
+      ><input formControlName="passwordConfirm" type="password" />
     </div>
     <button type="submit">Sign up</button>
   </form>
