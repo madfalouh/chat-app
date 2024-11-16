@@ -15,7 +15,6 @@ import java.util.List;
 public class ChatRoomDto {
     private String friend_username;
     private List<MessageDto> messages;
-    private Long firstUserId;
-    private Long secondUserId;
+
 
 }

@@ -7,13 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/user")
+@CrossOrigin(origins = "http://localhost:4200")
 @AllArgsConstructor
 @Getter
 @Setter
@@ -24,7 +22,7 @@ public class UserController {
 
     @PostMapping("/login")
         public ResponseEntity<User> login(@RequestBody UserRequest userRequest) throws Exception {
-        User user = userService.findUserByUsernameAndPassword(userRequest.getName(), userRequest.getPassword()).orElseThrow(Exception::new) ;
+        User user = userService.findUserByUsernameAndPassword(userRequest.getUsername(), userRequest.getPassword()).orElseThrow(Exception::new) ;
         if (user != null) {
             return  ResponseEntity.ok(user) ;
         }else {
@@ -34,14 +32,13 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<User> signup(@RequestBody UserRequest userRequest) {
-            User user = userService.saveUser(userRequest.getName(), userRequest.getPassword());
+            User user = userService.saveUser(userRequest.getUsername(), userRequest.getPassword());
             if (user != null) {
                 return ResponseEntity.ok(user);
             } else {
                 return ResponseEntity.status(400).body(null);
             }
     }
-
 
 
 }

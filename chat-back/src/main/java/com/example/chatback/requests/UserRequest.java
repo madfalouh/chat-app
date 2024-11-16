@@ -10,7 +10,6 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 public class UserRequest {
-    Long id ;
-    String name;
+    String username;
     String password;
 }

@@ -55,27 +55,20 @@ public class ChatRoomService {
                         .map(message -> new MessageDto(message.getSender_id(), message.getContent()))
                         .toList();
 
-                chatRoomDtos.add(new ChatRoomDto(myFriend.getUsername(), messageDtos , chatRoom.getFirstUserId(), chatRoom.getSecondUserId()));
+                chatRoomDtos.add(new ChatRoomDto(myFriend.getUsername(), messageDtos));
             }
         }
         return chatRoomDtos;
     }
 
 
-    public ChatRoom converChatRoomDTOToChatRoom(ChatRoomDto chatRoomDto) throws Exception {
-
-        if (chatRoomDto == null) {
-            throw new Exception("Cannot convert");
-        }
-        ChatRoom chatRoom = new ChatRoom();
-        chatRoom.setFirstUserId(chatRoomDto.getFirstUserId());
-        chatRoom.setSecondUserId(chatRoomDto.getSecondUserId());
-        return chatRoom;
-    }
 
 
-    public ChatRoom saveChatRoom(ChatRoomDto chatRoomDto) throws Exception {
-        ChatRoom chatRoom =  converChatRoomDTOToChatRoom(chatRoomDto);
+
+    public ChatRoom saveChatRoom(Long firstId , Long secondId) throws Exception {
+        ChatRoom chatRoom = new ChatRoom() ;
+        chatRoom.setFirstUserId(firstId);
+        chatRoom.setSecondUserId(secondId);
         return chatRoomRepository.save(chatRoom) ;
     }
 
