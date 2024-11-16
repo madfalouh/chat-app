@@ -6,8 +6,9 @@
       ><input
         formControlName="username"
         type="text"
-        placeholder="Exemple : xxDarkShadow"
+        placeholder="Exemple : enter your username"
       />
+      <div class="form-error"  *ngIf="isFieldInvalid('username')" >check field for errors</div>
     </div>
     <div class="input-container">
       <label for="">Password</label

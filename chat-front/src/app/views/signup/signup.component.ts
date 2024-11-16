@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-signup',
-  standalone: true,
-  imports: [RouterLink , ReactiveFormsModule],
   templateUrl: './signup.component.html',
   styleUrl: '../formStyle.css'
 })
