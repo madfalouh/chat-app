@@ -7,6 +7,8 @@ import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { AppComponent } from './app.component';
 import { routes } from './app.routes';
 import { SignupComponent } from './views/signup/signup.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ConnectionServiceService } from './services/connection-service.service';
 
 @NgModule({
     declarations: [
@@ -19,8 +21,10 @@ import { SignupComponent } from './views/signup/signup.component';
         RouterLink, ReactiveFormsModule,
         BrowserModule,
         CommonModule,
+        HttpClientModule ,
         RouterModule.forRoot(routes) ,
     ],
+    providers: [ConnectionServiceService],
     bootstrap: [AppComponent],
 })
 export class AppModule { }

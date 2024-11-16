@@ -6,13 +6,14 @@
       ><input
         formControlName="username"
         type="text"
-        placeholder="Exemple : enter your username"
+        placeholder="Exemple : xxDarkShadow"
       />
-      <div class="form-error"  *ngIf="isFieldInvalid('username')" >check field for errors</div>
+      <div class="form-error"  *ngIf="isFieldInvalid('username')" >{{getErrorMessage("username")}}</div>
     </div>
     <div class="input-container">
       <label for="">Password</label
       ><input formControlName="password" type="password" />
+      <div class="form-error"  *ngIf="isFieldInvalid('username')" >{{getErrorMessage("password")}}</div>
     </div>
     <button type="submit">Login</button>
   </form>
