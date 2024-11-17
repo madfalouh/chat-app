@@ -2,19 +2,19 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './views/login/login.component';
 import { SignupComponent } from './views/signup/signup.component';
 import { HomeComponent } from './views/home/home.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     {
         path : "",
         redirectTo : "login",
         pathMatch : "full",
-
-// add guard
     },
     {
         path : "login",
         pathMatch : "full",
-        component : LoginComponent
+        component : LoginComponent,
+        canActivate : [authGuard]
     },
     {
         path : "signup",
@@ -24,7 +24,8 @@ export const routes: Routes = [
     {
         path : "home",
         pathMatch : "full",
-        component : HomeComponent
+        component : HomeComponent,
+        canActivate : [authGuard]
     },
 
 ];

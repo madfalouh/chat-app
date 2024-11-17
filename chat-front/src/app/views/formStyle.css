@@ -39,8 +39,6 @@
 .form-container > form > button {
   margin-inline: auto;
   margin-top: 1.5rem !important;
-  background-color: var(--secondary-clr);
-  color: var(--contrast-clr);
 }
 
 .input-container > * {
@@ -55,8 +53,8 @@
 .input-container > input {
   margin-top: 0.2rem;
   border: none;
-  border-radius: 0.2rem;
-  height: 2rem;
+  border-radius: var(--control-radius);
+  height: var(--control-height);
   padding-left: 0.5rem;
   width: 100%;
 }

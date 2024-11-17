@@ -8,14 +8,18 @@
         type="text"
         placeholder="Exemple : xxDarkShadow"
       />
-      <div class="form-error"  *ngIf="isFieldInvalid('username')" >{{getErrorMessage("username")}}</div>
+      <div class="form-error" *ngIf="isFieldInvalid('username')">
+        {{ getErrorMessage("username") }}
+      </div>
     </div>
     <div class="input-container">
       <label for="">Password</label
       ><input formControlName="password" type="password" />
-      <div class="form-error"  *ngIf="isFieldInvalid('username')" >{{getErrorMessage("password")}}</div>
+      <div class="form-error" *ngIf="isFieldInvalid('username')">
+        {{ getErrorMessage("password") }}
+      </div>
     </div>
-    <button type="submit">Login</button>
+    <button type="submit" class="main-button">Login</button>
   </form>
   <div class="form-footer">
     <span>Don't have an account yet ? </span>

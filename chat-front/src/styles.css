@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"); */
 
 * {
   margin: 0;
@@ -10,20 +10,27 @@
 
 body {
   --main-clr: #fa4032;
-  --secondary-clr: var(--bg-clr);
+  --font-clr: var(--secondary-clr);
+  --secondary-clr: #262946;
   --contrast-clr: white;
-  --bg-clr: #262946;
-  --font-clr: var(--bg-clr);
+  --control-height: 2rem;
+  --control-radius: 0.2rem;
   background-color: var(--contrast-clr);
 }
 
 button {
   display: block;
-  height: 2rem;
+  height: var(--control-height);
   min-width: 5rem;
+  padding-inline: 1rem;
   border: none;
-  border-radius: 0.2rem;
+  border-radius: var(--control-radius);
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
+}
+
+.main-button {
+  background-color: var(--secondary-clr);
+  color: var(--contrast-clr);
 }

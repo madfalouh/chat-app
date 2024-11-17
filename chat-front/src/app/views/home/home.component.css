@@ -1,0 +1,134 @@
+.main-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.max-width {
+  width: 100%;
+  max-width: 70rem;
+}
+
+.navbar-container {
+  background-color: var(--main-clr);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 1rem;
+  margin-inline: auto;
+  height: 3rem;
+}
+
+.navbar form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar form button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.input-container {
+  width: 20rem;
+  padding-left: 0.3rem;
+  background-color: var(--contrast-clr);
+  height: var(--control-height);
+  border-radius: var(--control-radius);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.search-icon {
+  display: flex;
+}
+
+.input-container > input {
+  height: 100%;
+  flex: 1;
+  padding-left: 0.2rem;
+  border: none;
+  background-color: none;
+  outline: none;
+}
+
+.content-container {
+  margin-inline: auto;
+  flex: 1;
+  display: flex;
+}
+
+.left {
+  width: 12rem;
+}
+
+.friend {
+  height: 3rem;
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+  padding-inline: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(41, 43, 48, 0.325);
+}
+
+.friend:hover {
+  background-color: rgba(49, 55, 87, 0.325);
+}
+
+.friend .icon {
+  background-color: pink;
+  height: 2rem;
+  aspect-ratio: 1;
+  border-radius: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--contrast-clr);
+  background-color: var(--secondary-clr);
+}
+
+.friend .username {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.right .messages-container {
+  border-left: 2px solid rgba(41, 43, 48, 0.325);
+  flex: 1;
+}
+
+.right > form {
+  background-color: var(--secondary-clr);
+  height: 3.5rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 1rem;
+  gap: 1rem;
+}
+
+.right > form > input {
+  background-color: var(--contrast-clr);
+  height: var(--control-height);
+  border-radius: var(--control-radius);
+  flex: 1;
+  max-width: 30rem;
+  padding-left: 0.5rem;
+  border: none;
+}

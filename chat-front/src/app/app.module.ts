@@ -10,7 +10,8 @@ import { SignupComponent } from './views/signup/signup.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ConnectionService } from './services/connection.service';
 import { HomeComponent } from './views/home/home.component';
-
+import { MatIconModule } from '@angular/material/icon';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
     declarations: [
         AppComponent ,
@@ -25,6 +26,8 @@ import { HomeComponent } from './views/home/home.component';
         CommonModule,
         HttpClientModule ,
         RouterModule.forRoot(routes) ,
+        BrowserAnimationsModule, // Required for Angular Material
+        MatIconModule  
     ],
     providers: [ConnectionService],
     bootstrap: [AppComponent],

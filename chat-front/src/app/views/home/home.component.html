@@ -1,11 +1,33 @@
-<div>
-  <div>NAVBAR</div>
-  <div>
+<div class="main-container">
+  <div class="navbar-container">
+    <div class="navbar max-width">
+      <h2>CHAT-APP</h2>
+      <form>
+        <label class="input-container">
+          <mat-icon class="search-icon">search</mat-icon>
+          <input placeholder="Insert a friend's username" type="text" />
+        </label>
+        <button class="main-button">Send Request</button>
+      </form>
+      <button (click)="signOff()">Sign off</button>
+    </div>
+  </div>
+  <div class="max-width content-container">
     <div class="left">
       <div class="friend" *ngFor="let item of chatRooms">
-        {{ item.friend_username }}
+        <div class="icon">
+          {{ item.friend_username.charAt(0).toUpperCase() }}
+        </div>
+        <div class="username">{{ item.friend_username }}</div>
       </div>
     </div>
-    <div></div>
+    <div class="right">
+      <div class="messages-container"></div>
+      <form action="">
+        <input type="text" placeholder="Insert your message" /><button>
+          Send message
+        </button>
+      </form>
+    </div>
   </div>
 </div>
