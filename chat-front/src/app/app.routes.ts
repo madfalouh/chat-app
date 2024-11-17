@@ -19,7 +19,8 @@ export const routes: Routes = [
     {
         path : "signup",
         pathMatch : "full",
-        component : SignupComponent
+        component : SignupComponent, 
+        canActivate : [authGuard]
     },
     {
         path : "home",

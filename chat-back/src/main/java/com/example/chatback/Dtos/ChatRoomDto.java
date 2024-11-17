@@ -14,7 +14,5 @@ import java.util.List;
 @Setter
 public class ChatRoomDto {
     private String friend_username;
-    private List<MessageDto> messages;
-
-
+    private Long idChatRoom;
 }

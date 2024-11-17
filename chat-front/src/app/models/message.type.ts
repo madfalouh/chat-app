@@ -1,4 +1,4 @@
-export type message = {
+export type Message = {
     content : string;
-    senderId : number
+    sender_id : string
 }

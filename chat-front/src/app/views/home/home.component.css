@@ -80,7 +80,7 @@
   border-bottom: 1px solid rgba(41, 43, 48, 0.325);
 }
 
-.friend:hover {
+.friend:hover  , .selected {
   background-color: rgba(49, 55, 87, 0.325);
 }
 
@@ -110,6 +110,35 @@
 .right .messages-container {
   border-left: 2px solid rgba(41, 43, 48, 0.325);
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+.right .messages-container .message {
+  border-radius: 0.4rem;
+  max-width: 20rem;
+  width: 100%;
+  padding: 0.7rem;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.send {
+  background-color: var(--main-clr);
+  margin-left: auto;
+  color: var(--contrast-clr);
+}
+
+.receive {
+  background-color: rgb(184, 187, 214);
+}
+
+.message + .message {
+margin-top: 2rem;
+}
+
+.receive + .receive  , .send + .send {
+  margin-top: 0.3rem !important;
 }
 
 .right > form {

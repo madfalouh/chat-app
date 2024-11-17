@@ -6,6 +6,7 @@ import com.example.chatback.Entities.ChatRoom;
 import com.example.chatback.Entities.Message;
 import com.example.chatback.Entities.User;
 import com.example.chatback.Repositories.ChatRoomRepository;
+import com.example.chatback.Repositories.MessageRepository;
 import com.example.chatback.Repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -48,22 +49,12 @@ public class ChatRoomService {
                 // IIm the second id of the chat room my friend is the 1st id
                 myFriend = userRepository.findById(chatRoom.getFirstUserId()).orElse(null);
             }
-
             if (myFriend != null) {
-                // manual mapping to msgDTO
-                List<MessageDto> messageDtos = chatRoom.getMessages().stream()
-                        .map(message -> new MessageDto(message.getSender_id(), message.getContent()))
-                        .toList();
-
-                chatRoomDtos.add(new ChatRoomDto(myFriend.getUsername(), messageDtos));
+                chatRoomDtos.add(new ChatRoomDto(myFriend.getUsername(), chatRoom.getId()));
             }
         }
         return chatRoomDtos;
     }
-
-
-
-
 
     public ChatRoom saveChatRoom(Long firstId , Long secondId) throws Exception {
         ChatRoom chatRoom = new ChatRoom() ;
@@ -72,17 +63,12 @@ public class ChatRoomService {
         return chatRoomRepository.save(chatRoom) ;
     }
 
-
-    /*
-        better save msgs by bulk not by single msg
-    */
-    public boolean updateChatRoomByMessage(Long chatRoomId, Message newMessage)  {
+    public boolean updateChatRoomByMessage(Long chatRoomId, MessageDto newMessage)  {
             try {
                 ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(Exception::new);
-                List<Message> newMessages = chatRoom.getMessages();
-                newMessages.add(newMessage);
-                chatRoom.setMessages(newMessages);
-                chatRoomRepository.save(chatRoom);
+                Message message = messageService.fromDtoToEntity(newMessage);
+                message.setChatRoom(chatRoom);
+                messageService.save(message);
                 return true;
             } catch (Exception e) {
                 return false;

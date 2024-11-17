@@ -14,19 +14,24 @@
   </div>
   <div class="max-width content-container">
     <div class="left">
-      <div class="friend" *ngFor="let item of chatRooms">
-        <div class="icon">
+      <div class="friend" *ngFor="let item of chatRooms" [ngClass]="{ 'selected' : getIdChatRoom() == item.idChatRoom }" (click)="setChatRoom(item.idChatRoom)" >
+        <div class="icon" >
           {{ item.friend_username.charAt(0).toUpperCase() }}
         </div>
         <div class="username">{{ item.friend_username }}</div>
       </div>
     </div>
     <div class="right">
-      <div class="messages-container"></div>
+      <div class="messages-container">
+        <div class="message" [ngClass]="getUserId() == item.sender_id ? 'send' : 'receive'" *ngFor="let item of messages" >
+          {{item.content}}
+          </div>
+      </div>
       <form action="">
-        <input type="text" placeholder="Insert your message" /><button>
-          Send message
-        </button>
+        <input type="text" #MessageInput placeholder="Insert your message" />
+          <button (click)="send($event , MessageInput.value)">
+           Send message
+          </button>
       </form>
     </div>
   </div>

@@ -1,6 +1,7 @@
 package com.example.chatback.Controllers;
 
 import com.example.chatback.Dtos.ChatRoomDto;
+import com.example.chatback.Dtos.MessageDto;
 import com.example.chatback.Entities.Message;
 import com.example.chatback.Services.ChatRoomService;
 import com.example.chatback.requests.UserRequest;

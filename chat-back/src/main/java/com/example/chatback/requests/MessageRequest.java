@@ -1,5 +1,6 @@
 package com.example.chatback.requests;
 
+import com.example.chatback.Dtos.MessageDto;
 import com.example.chatback.Entities.Message;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +13,6 @@ import java.util.Date;
 @ToString
 @AllArgsConstructor
 public class MessageRequest {
-    public Message message;
+    public MessageDto message;
     public Long chatRoom_id;
 }
