@@ -14,7 +14,7 @@ body {
   --contrast-clr: white;
   --bg-clr: #262946;
   --font-clr: var(--bg-clr);
-  background-color: var(--bg-clr);
+  background-color: var(--contrast-clr);
 }
 
 button {

@@ -1,6 +1,7 @@
+import { UserService } from './../../services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ConnectionServiceService } from '../../services/connection-service.service';
+import { ConnectionService } from '../../services/connection.service';
 import { User } from '../../models/user.type';
 import { Router } from '@angular/router';
 
@@ -12,7 +13,10 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   loginForm! : FormGroup;
 
-  constructor(private formBuiler: FormBuilder ,  private loginService: ConnectionServiceService , private router: Router) { }
+  constructor(private formBuiler: FormBuilder ,  
+    private loginService: ConnectionService, 
+    private userService :UserService, 
+    private router: Router) { }
 
 
   ngOnInit(): void {
@@ -54,8 +58,11 @@ getErrorMessage(field: string): string {
 
       this.loginService.login({ username, password }).subscribe((res: User) => {
         console.log(res);
-
         if (res) {
+          if (res.id) {
+            sessionStorage.setItem("id",res.id)
+            this.userService.setUserId(res.id)
+          }
           this.router.navigate(["/home"])
         } else {
           console.log("ser t7wa");

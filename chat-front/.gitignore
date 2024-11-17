@@ -19,6 +19,7 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
+../chat-back/src/main/resources/.env.properties
 
 # Visual Studio Code
 .vscode/*

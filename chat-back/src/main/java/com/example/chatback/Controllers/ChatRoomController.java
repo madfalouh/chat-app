@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/chatroom")
+@CrossOrigin(origins = "http://localhost:4200")
 @AllArgsConstructor
 @Getter
 @Setter

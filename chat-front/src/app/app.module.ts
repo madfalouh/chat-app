@@ -8,13 +8,15 @@ import { AppComponent } from './app.component';
 import { routes } from './app.routes';
 import { SignupComponent } from './views/signup/signup.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ConnectionServiceService } from './services/connection-service.service';
+import { ConnectionService } from './services/connection.service';
+import { HomeComponent } from './views/home/home.component';
 
 @NgModule({
     declarations: [
         AppComponent ,
         LoginComponent ,
-        SignupComponent
+        SignupComponent ,
+        HomeComponent
     ],
     imports: [
         RouterOutlet,
@@ -24,7 +26,7 @@ import { ConnectionServiceService } from './services/connection-service.service'
         HttpClientModule ,
         RouterModule.forRoot(routes) ,
     ],
-    providers: [ConnectionServiceService],
+    providers: [ConnectionService],
     bootstrap: [AppComponent],
 })
 export class AppModule { }
