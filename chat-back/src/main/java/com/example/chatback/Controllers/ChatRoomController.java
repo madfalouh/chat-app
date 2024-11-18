@@ -24,7 +24,7 @@ public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
 
-    @GetMapping("/rooms/{id}")
+    @GetMapping("/all/{id}")
     public ResponseEntity<List<ChatRoomDto>> getUserRooms(@PathVariable Long id ) {
         List<ChatRoomDto> chatRooms = chatRoomService.getChatRoomOfTheUsers(id);
         if (chatRooms != null && !chatRooms.isEmpty()) {
@@ -45,7 +45,7 @@ public class ChatRoomController {
     }
 
 
-    @PostMapping("/create-room")
+    @PostMapping("/create")
     public ResponseEntity<Boolean> createRoom(@RequestParam long firstId , @RequestParam long secondId) throws Exception {
         if(chatRoomService.saveChatRoom(firstId , secondId)  !=null ) {
             return  ResponseEntity.ok(true) ;

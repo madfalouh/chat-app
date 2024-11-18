@@ -71,3 +71,10 @@
   cursor: pointer;
   color: var(--contrast-clr);
 }
+
+.form-error {
+  color: var(--contrast-clr);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-top: 0.2rem;
+}

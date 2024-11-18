@@ -8,14 +8,28 @@
         type="text"
         placeholder="Exemple : xxDarkShadow"
       />
+      <div class="form-error" *ngIf="isFieldInvalid('username')">
+        {{ getErrorMessage("username") }}
+      </div>
     </div>
     <div class="input-container">
       <label for="">Password</label
       ><input formControlName="password" type="password" />
+      <div class="form-error" *ngIf="isFieldInvalid('password')">
+        {{ getErrorMessage("password") }}
+      </div>
     </div>
     <div class="input-container">
       <label for="">Confirm Password</label
       ><input formControlName="passwordConfirm" type="password" />
+      <div
+        class="form-error"
+        *ngIf="
+          isFieldInvalid('passwordConfirm') || signupForm.hasError('mismatch')
+        "
+      >
+        {{ getErrorMessage("passwordConfirm") }}
+      </div>
     </div>
     <button type="submit" class="main-button">Sign up</button>
   </form>

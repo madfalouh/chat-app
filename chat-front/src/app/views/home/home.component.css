@@ -80,7 +80,8 @@
   border-bottom: 1px solid rgba(41, 43, 48, 0.325);
 }
 
-.friend:hover  , .selected {
+.friend:hover,
+.selected {
   background-color: rgba(49, 55, 87, 0.325);
 }
 
@@ -115,7 +116,7 @@
   padding: 1rem;
 }
 .right .messages-container .message {
-  border-radius: 0.4rem;
+  border-radius: 1rem;
   max-width: 20rem;
   width: 100%;
   padding: 0.7rem;
@@ -137,9 +138,25 @@
   margin-top: 2rem;
 }
 
-.receive~.receive,
-.send~.send {
-  margin-top: 0.3rem;
+.receive + .receive,
+.send + .send {
+  margin-top: 0.2rem;
+}
+
+.send + .send {
+  border-top-right-radius: 0.3rem !important;
+}
+
+.send:has(+ .send) {
+  border-bottom-right-radius: 0.3rem !important;
+}
+
+.receive + .receive {
+  border-top-left-radius: 0.3rem !important;
+}
+
+.receive:has(+ .receive) {
+  border-bottom-left-radius: 0.3rem !important;
 }
 
 .right > form {
@@ -173,7 +190,6 @@
   width: inherit;
   position: absolute;
   background-color: rgb(216, 207, 207);
-
 }
 
 .field-container > .search-results > p {
@@ -185,9 +201,8 @@
 .search-results > .search-result {
   cursor: pointer;
   padding: 1.2rem;
-
 }
 
-.search-results>.search-result:hover {
+.search-results > .search-result:hover {
   background-color: grey;
 }

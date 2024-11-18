@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/messages")
+@RequestMapping("/api/v1/message")
 @CrossOrigin(origins = "http://localhost:4200")
 @AllArgsConstructor
 @Getter
@@ -23,7 +23,7 @@ public class MessageController {
     private final MessageService messageService;
     private final ChatRoomService chatRoomService;
 
-    @GetMapping("/{roomId}")
+    @GetMapping("/get-messages/{roomId}")
     public ResponseEntity<List<MessageDto>> getMessages(@PathVariable Long roomId ) {
         List<MessageDto>  messages = messageService.getMessagesOfTheChatRoom(roomId);
         if (messages != null && !messages.isEmpty()) {
@@ -33,7 +33,7 @@ public class MessageController {
         }
     }
 
-    @PostMapping("/{roomId}")
+    @PostMapping("/save/{roomId}")
     public ResponseEntity<Boolean> saveMessage(@PathVariable Long roomId , @RequestBody MessageDto messageDto) {
         boolean result = chatRoomService.updateChatRoomByMessage(roomId , messageDto);
         return  result ? ResponseEntity.ok(true) : ResponseEntity.status(401).body(null) ;

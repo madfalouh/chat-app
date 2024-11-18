@@ -26,9 +26,9 @@ export class LoginComponent implements OnInit {
   createForm() {
 
     this.loginForm = this.formBuiler.group({
-      username: new FormControl(null, [Validators.required, Validators.minLength(4)]),
+      username: new FormControl(null, [Validators.required, Validators.minLength(4)] ),
       password: new FormControl(null, [Validators.required, Validators.minLength(4)]),
-    })
+    } , {updateOn : "submit"})
   }
 
   isFieldInvalid(field: string): boolean {
@@ -36,18 +36,19 @@ export class LoginComponent implements OnInit {
     return !!control && control.dirty && control.invalid ;
   }
 
-getErrorMessage(field: string): string {
-  const control = this.loginForm.get(field);
+  getErrorMessage(field: string): string {
+    const control = this.loginForm.get(field);
 
-  if (control?.hasError('required')) {
-    return 'This field is required.';
+    if (control?.hasError('required')) {
+      return 'This field is required.';
+    }
+    if (control?.hasError('minlength')) {
+      const minLength = control.errors?.['minlength']?.requiredLength;
+      return "Minimum length is " + minLength;
+    }
+    return '';
   }
-  if (control?.hasError('minlength')) {
-    const minLength = control.errors?.['minlength']?.requiredLength;
-    return "Minimum length is " + minLength;
-  }
-  return '';
-}
+  
   login() {
     this.loginForm.controls['password']?.markAsDirty();
     this.loginForm.controls['username']?.markAsDirty();
