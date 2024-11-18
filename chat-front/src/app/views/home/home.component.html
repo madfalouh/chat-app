@@ -3,10 +3,17 @@
     <div class="navbar max-width">
       <h2>CHAT-APP</h2>
       <form>
-        <label class="input-container">
-          <mat-icon class="search-icon">search</mat-icon>
-          <input placeholder="Insert a friend's username" type="text" />
-        </label>
+        <div class="field-container">
+          <label class="input-container">
+            <mat-icon class="search-icon">search</mat-icon>
+            <input  #SearchInput placeholder="Insert a friend's username" (input)="search($event)" type="text" />
+          </label>
+          <div class="search-results" *ngIf="showresults">
+            <div class="search-result" *ngFor="let item of searchResult"  (click)="selectUser(item)"  >
+             <p>{{item.username}}</p> 
+            </div>
+          </div>
+        </div>
         <button class="main-button">Send Request</button>
       </form>
       <button (click)="signOff()">Sign off</button>

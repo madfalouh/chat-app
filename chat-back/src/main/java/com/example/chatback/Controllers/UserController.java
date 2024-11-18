@@ -1,5 +1,6 @@
 package com.example.chatback.Controllers;
 
+import com.example.chatback.Dtos.UserDto;
 import com.example.chatback.Entities.User;
 import com.example.chatback.Services.UserService;
 import com.example.chatback.requests.UserRequest;
@@ -8,6 +9,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -40,5 +43,15 @@ public class UserController {
             }
     }
 
+
+    @GetMapping("/search")
+    public ResponseEntity<List<UserDto>> foundUsers(@RequestParam String username) {
+        List<UserDto> users = userService.findBySubString(username).orElse(null);
+        if (users != null) {
+            return ResponseEntity.ok(users);
+        }else {
+            return ResponseEntity.status(404).body(null);
+        }
+    }
 
 }

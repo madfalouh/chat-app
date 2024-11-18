@@ -45,7 +45,6 @@ public class ChatRoomController {
     }
 
 
-    // is that needed ?
     @PostMapping("/create-room")
     public ResponseEntity<Boolean> createRoom(@RequestParam long firstId , @RequestParam long secondId) throws Exception {
         if(chatRoomService.saveChatRoom(firstId , secondId)  !=null ) {

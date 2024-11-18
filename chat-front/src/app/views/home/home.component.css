@@ -134,11 +134,12 @@
 }
 
 .message + .message {
-margin-top: 2rem;
+  margin-top: 2rem;
 }
 
-.receive + .receive  , .send + .send {
-  margin-top: 0.3rem !important;
+.receive~.receive,
+.send~.send {
+  margin-top: 0.3rem;
 }
 
 .right > form {
@@ -160,4 +161,33 @@ margin-top: 2rem;
   max-width: 30rem;
   padding-left: 0.5rem;
   border: none;
+}
+
+.field-container {
+  display: inline-block;
+  width: 20rem;
+  position: relative;
+}
+
+.field-container > .search-results {
+  width: inherit;
+  position: absolute;
+  background-color: rgb(216, 207, 207);
+
+}
+
+.field-container > .search-results > p {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: rgb(0, 0, 0);
+}
+
+.search-results > .search-result {
+  cursor: pointer;
+  padding: 1.2rem;
+
+}
+
+.search-results>.search-result:hover {
+  background-color: grey;
 }

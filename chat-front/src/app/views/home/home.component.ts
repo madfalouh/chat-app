@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ChatRoomService } from '../../services/chat-room.service';
 import { ChatRoom } from './../../models/chatRoom.type';
 import { UserService } from './../../services/user.service';
 import { Router } from '@angular/router';
 import { Message } from '../../models/message.type';
 import { MessageService } from '../../services/message.service';
+import { User } from '../../models/user.type';
+import { WebSocketService } from '../../services/web-socket.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -16,9 +18,16 @@ export class HomeComponent implements OnInit {
   
   messages: Array<Message> = [] ;
 
+  searchResult:  Array<User> = [] 
+
+  showresults: boolean = false
+
+  @ViewChild('SearchInput') searchInput!: ElementRef;
+
 
   constructor(private chatRoomService: ChatRoomService,
     private userService: UserService,
+    private webSocketService: WebSocketService,
     private router: Router ,
     private messageService : MessageService)
    { }
@@ -99,5 +108,33 @@ export class HomeComponent implements OnInit {
     });
   }
 
+
+  search(event: any) {
+
+    if (event.target.value && event.target.value.trim() != '') {
+      this.userService.searchUser(event.target.value).subscribe((res : Array<User>) => {
+        if (res) {
+          this.searchResult = res;
+          this.showresults = true ;
+        } else {
+          console.log('ser t7wa');
+
+        }
+
+      })
+
+    } else if (event.target.value.trim() == '' && this.searchResult.length > 0) {
+      this.searchResult = []
+    }
+
+
+
+  }
+
+
+  selectUser(user: User) {
+    this.searchInput.nativeElement.value = user.username
+    this.showresults = false ;
+  }
 
 }
