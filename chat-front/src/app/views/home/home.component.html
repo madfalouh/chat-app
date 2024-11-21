@@ -6,11 +6,20 @@
         <div class="field-container">
           <label class="input-container">
             <mat-icon class="search-icon">search</mat-icon>
-            <input  #SearchInput placeholder="Insert a friend's username" (input)="search($event)" type="text" />
+            <input
+              #SearchInput
+              placeholder="Insert a friend's username"
+              (input)="search($event)"
+              type="text"
+            />
           </label>
           <div class="search-results" *ngIf="showresults">
-            <div class="search-result" *ngFor="let item of searchResult"  (click)="selectUser(item)"  >
-             <p>{{item.username}}</p> 
+            <div
+              class="search-result"
+              *ngFor="let item of searchResult"
+              (click)="selectUser(item)"
+            >
+              <p>{{ item.username }}</p>
             </div>
           </div>
         </div>
@@ -21,8 +30,13 @@
   </div>
   <div class="max-width content-container">
     <div class="left">
-      <div class="friend" *ngFor="let item of chatRooms" [ngClass]="{ 'selected' : getIdChatRoom() == item.idChatRoom }" (click)="setChatRoom(item.idChatRoom)" >
-        <div class="icon" >
+      <div
+        class="friend"
+        *ngFor="let item of chatRooms"
+        [ngClass]="{ selected: getIdChatRoom() == item.idChatRoom }"
+        (click)="setChatRoom(item.idChatRoom, item.friend_username)"
+      >
+        <div class="icon">
           {{ item.friend_username.charAt(0).toUpperCase() }}
         </div>
         <div class="username">{{ item.friend_username }}</div>
@@ -30,15 +44,20 @@
     </div>
     <div class="right">
       <div class="messages-container">
-        <div class="message" [ngClass]="getUserId() == item.sender_id ? 'send' : 'receive'" *ngFor="let item of messages" >
-          {{item.content}}
-          </div>
+        <div
+          class="message"
+          [ngClass]="getUserId() == item.sender_id ? 'send' : 'receive'"
+          *ngFor="let item of messages"
+        >
+          {{ item.content }}
+        </div>
       </div>
       <form action="">
         <input type="text" #MessageInput placeholder="Insert your message" />
-          <button (click)="send($event , MessageInput.value)">
+        <!-- <button (click)="send($event , MessageInput.value)">
            Send message
-          </button>
+          </button> -->
+        <button (click)="send($event)">Send message</button>
       </form>
     </div>
   </div>

@@ -7,6 +7,7 @@ import { MessageService } from '../../services/message.service';
 import { WebSocketService } from '../../services/web-socket.service';
 import { ChatRoom } from './../../models/chatRoom.type';
 import { UserService } from './../../services/user.service';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -36,6 +37,7 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.webSocketService.connect()
     this.getChatrooms();
     this.getMessages();
   }
@@ -80,8 +82,9 @@ export class HomeComponent implements OnInit {
     )
   }
 
-  setChatRoom(id: string) {
+  setChatRoom(id: string , friend_username : string) {
     sessionStorage.setItem("idChatRoom", id);
+    sessionStorage.setItem("friend_username", friend_username);
     this.chatRoomService.setIdChatRoom(id);
     this.getMessages();
   }
@@ -92,24 +95,31 @@ export class HomeComponent implements OnInit {
 
 
 
-  send(event: any, content: string) {
-    event.preventDefault();
-    const id = this.getIdChatRoom();
-    const userId = this.getUserId();
-    if (!userId || !id || !content) return;
-    const message: Message = {
-      sender_id: userId,
-      content: content,
-    }
-    this.messageService.saveMessage(id, message).subscribe((res: boolean) => {
-      if (res) {
-        // TODO   
-      } else {
-        console.log(" ser t7wa ");
+  // send(event: any, content: string) {
+  //   event.preventDefault();
+  //   const id = this.getIdChatRoom();
+  //   const userId = this.getUserId();
+  //   if (!userId || !id || !content) return;
+  //   const message: Message = {
+  //     sender_id: userId,
+  //     content: content,
+  //   }
+  //   this.messageService.saveMessage(id, message).subscribe((res: boolean) => {
+  //     if (res) {
+  //       // TODO   
+  //     } else {
+  //       console.log(" ser t7wa ");
 
-      }
-    });
-  }
+  //     }
+  //   });
+  // }
+
+    send(event: any) {
+      event.preventDefault();
+      const username = sessionStorage.getItem("friend_username");
+      if (!username) return
+      this.webSocketService.sendMsg(username)
+    }
 
 
   search(event: any) {

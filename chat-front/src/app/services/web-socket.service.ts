@@ -1,28 +1,34 @@
 import { Injectable } from '@angular/core';
-import { Client } from '@stomp/stompjs';
+import { Stomp } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 import { WEB_SOCKET_URL } from '../constants/apis';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WebSocketService {
-  private client: Client;
+  private stompClient: any;
 
-  constructor() {
-    this.client = new Client({
-      brokerURL: WEB_SOCKET_URL,
-      reconnectDelay: 5000,
-    });
+  connect() : void {
+    const username = sessionStorage.getItem("username")
+    const socket = new SockJS(WEB_SOCKET_URL + `?username=${username}`);  // Establish a SockJS connection
+    this.stompClient = Stomp.over(socket); 
 
-    this.client.onConnect = () => {
-      console.log('l7wa tkonnectit');
-    };
+    // Connect to the STOMP endpoint
+    this.stompClient.connect({}, (frame: any) => {
+      console.log('Connected: ' + frame);
 
-
-    this.client.onWebSocketError = (error) => {
-      console.error(error);
-    };
-
-    this.client.activate();
+      // Subscribe to a topic (e.g., /topic/chat) to listen for messages
+      this.stompClient.subscribe('/user/queue/messages', (message: any) => {
+        console.log('Message received: ', message.body);
+      });
+    }, (error: any) => {
+      console.error('Connection error: ', error);
+    })
   }
+
+  sendMsg(username : string) {
+    this.stompClient.send("/app/hello", {}, username);
+  }
+
 }

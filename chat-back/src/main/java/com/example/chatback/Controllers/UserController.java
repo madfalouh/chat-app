@@ -2,12 +2,15 @@ package com.example.chatback.Controllers;
 
 import com.example.chatback.Dtos.UserDto;
 import com.example.chatback.Entities.User;
+import com.example.chatback.Principal.UserPrincipal;
 import com.example.chatback.Services.UserService;
 import com.example.chatback.requests.UserRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,12 +23,12 @@ import java.util.List;
 @Setter
 public class UserController {
 
-
     private final UserService userService;
 
     @PostMapping("/login")
         public ResponseEntity<User> login(@RequestBody UserRequest userRequest) throws Exception {
         User user = userService.findUserByUsernameAndPassword(userRequest.getUsername(), userRequest.getPassword()).orElseThrow(Exception::new) ;
+        UserPrincipal principal = new UserPrincipal(userRequest.getUsername());
         if (user != null) {
             return  ResponseEntity.ok(user) ;
         }else {
