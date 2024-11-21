@@ -38,8 +38,20 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.webSocketService.connect()
+    this.webSocketService.message$.subscribe((message: any) => {
+console.log('zebiii');
+
+      console.log(message.body);
+      const msg = { content :  message.body , sender_id : '1' }
+
+    this.messages.push(msg)
+
+
+    })
     this.getChatrooms();
     this.getMessages();
+    
+
   }
 
 
