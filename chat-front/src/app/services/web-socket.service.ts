@@ -46,8 +46,12 @@ export class WebSocketService {
   
 
 
-  sendMsg(username : string) {
-    this.stompClient.send("/app/hello", {}, username);
+  sendMsg(username : string , content : string) {
+    const msg = {
+      username : username,
+      content : content
+    }
+    this.stompClient.send("/app/hello", {}, JSON.stringify(msg));
   }
 
 }

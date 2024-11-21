@@ -54,10 +54,7 @@
       </div>
       <form action="">
         <input type="text" #MessageInput placeholder="Insert your message" />
-        <!-- <button (click)="send($event , MessageInput.value)">
-           Send message
-          </button> -->
-        <button (click)="send($event)">Send message</button>
+        <button (click)="send($event, MessageInput.value)">Send message</button>
       </form>
     </div>
   </div>

@@ -39,14 +39,12 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.webSocketService.connect()
     this.webSocketService.message$.subscribe((message: any) => {
-console.log('zebiii');
-
-      console.log(message.body);
-      const msg = { content :  message.body , sender_id : '1' }
-
-    this.messages.push(msg)
-
-
+      if (!message?.body) return
+      const msg = {
+        content : message.body,
+        sender_id : "0"
+      }
+      this.messages.push(msg);
     })
     this.getChatrooms();
     this.getMessages();
@@ -126,11 +124,22 @@ console.log('zebiii');
   //   });
   // }
 
-    send(event: any) {
+    send(event: any, message: string) {
       event.preventDefault();
       const username = sessionStorage.getItem("friend_username");
-      if (!username) return
-      this.webSocketService.sendMsg(username)
+      const content = message.trim()
+      const id = this.getUserId();
+      const roomId = this.getIdChatRoom();
+      if (!username || !content || !id || !roomId) return
+      this.webSocketService.sendMsg(username, content)
+      const msgDTO = {
+        sender_id : id,
+        content : content
+      }
+      this.messages.push(msgDTO)
+      this.messageService.saveMessage(roomId,msgDTO).subscribe((res) => {
+        console.log("message saved to DB")
+      });
     }
 
 
