@@ -7,6 +7,7 @@ export const SEARCH_URL: string = USER_URL + "/search";
 
 export const CHATROOM_URL: string = BASE_URL + "/chatroom"
 export const GET_CHATROOMS_URL: string = CHATROOM_URL + "/all"
+export const CREAT_CHATROOM_URL: string = BASE_URL + "/chatroom" + "/create-by-name"
 
 
 export const MESSAGES_URL: string = BASE_URL + "/message"

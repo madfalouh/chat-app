@@ -9,6 +9,7 @@ export class ModalService {
 
   constructor(private modalService: NgbModal) {}
 
+   modalisOpen : boolean = false ;
 
   openModal(name: string) {
     const modalRef = this.modalService.open(FriendRequestModalComponent, {
@@ -16,7 +17,6 @@ export class ModalService {
       backdrop: true,
       keyboard: true,
     });
-
     modalRef.componentInstance.name = name;
     return modalRef.result;
   }

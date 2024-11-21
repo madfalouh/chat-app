@@ -53,6 +53,7 @@ export class HomeComponent implements OnInit {
     })
 
     this.webSocketService.request$.subscribe((req: any) => {
+      console.log(req);
 
       if (req && req.body && req.body.trim() !== '') {
         this.openFriendRequest(req.body)
@@ -193,12 +194,27 @@ export class HomeComponent implements OnInit {
   }
 
   openFriendRequest(usr: string) {
-    this.modalService.openModal(usr).then(
-      (result) => {
-        
 
-      }
-    );
+    if (!this.modalService.modalisOpen) {
+      this.modalService.openModal(usr).then(
+        (result) => {
+          this.chatRoomService.saveChatRoom(usr, this.getUserName()!).subscribe((res) => {
+            this.modalService.modalisOpen = false;
+            console.log(res);
+ 
+          },
+            (err) => {
+              console.log(err);
+              
+              this.modalService.modalisOpen = false;
+
+            }
+          )
+
+        }
+      );
+
+    }
   }
 
 

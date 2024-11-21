@@ -2,6 +2,7 @@ package com.example.chatback.Controllers;
 
 import com.example.chatback.Dtos.ChatRoomDto;
 import com.example.chatback.Dtos.MessageDto;
+import com.example.chatback.Entities.ChatRoom;
 import com.example.chatback.Entities.Message;
 import com.example.chatback.Services.ChatRoomService;
 import com.example.chatback.requests.UserRequest;
@@ -45,4 +46,15 @@ public class ChatRoomController {
         }
     }
 
+
+    @PostMapping("/create-by-name")
+    public ResponseEntity<ChatRoom> createRoom(@RequestParam String username1 , @RequestParam String username2) throws Exception {
+        ChatRoom chatRoom = chatRoomService.saveChatRoom(username1 , username2) ;
+        if(chatRoom !=null ) {
+            return  ResponseEntity.ok(chatRoom) ;
+        }
+        else{
+            return  ResponseEntity.status(401).body(null) ;
+        }
+    }
 }

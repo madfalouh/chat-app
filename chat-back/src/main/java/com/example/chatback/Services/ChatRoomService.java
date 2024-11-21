@@ -11,12 +11,14 @@ import com.example.chatback.Repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 @Getter
@@ -75,5 +77,23 @@ public class ChatRoomService {
             }
         }
 
+    public ChatRoom saveChatRoom(String username1, String username2) {
+
+        log.debug(username2);
+
+        System.out.println( "dcdcdcdcdcdc " + username2);
+
+      User user1 =  userRepository.findUserByUserName(username1).orElse(null) ;
+
+      User user2 =  userRepository.findUserByUserName(username2).orElse(null) ;
+
+        ChatRoom chatRoom = new ChatRoom() ;
+
+        assert user1 != null;
+        chatRoom.setFirstUserId(user1.getId());
+        assert user2 != null;
+        chatRoom.setSecondUserId(user2.getId());
+        return chatRoomRepository.save(chatRoom) ;
     }
+}
 
