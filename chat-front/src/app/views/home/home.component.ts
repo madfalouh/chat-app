@@ -7,6 +7,9 @@ import { MessageService } from '../../services/message.service';
 import { WebSocketService } from '../../services/web-socket.service';
 import { ChatRoom } from './../../models/chatRoom.type';
 import { UserService } from './../../services/user.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FriendRequestModalComponent } from '../../modals/friend-request-modal/friend-request-modal.component';
+import { ModalService } from '../../services/modal.service';
 
 @Component({
   selector: 'app-home',
@@ -15,13 +18,14 @@ import { UserService } from './../../services/user.service';
 })
 export class HomeComponent implements OnInit {
 
+
   chatRooms: Array<ChatRoom> = [];
-  
-  messages: Array<Message> = [] ;
 
-  searchResult:  Array<User> = [] 
+  messages: Array<Message> = [];
 
+  searchResult: Array<User> = []
 
+  selecttedUser!: string;
 
   showresults: boolean = false
 
@@ -31,9 +35,10 @@ export class HomeComponent implements OnInit {
   constructor(private chatRoomService: ChatRoomService,
     private userService: UserService,
     private webSocketService: WebSocketService,
-    private router: Router ,
-    private messageService : MessageService)
-   { }
+    private router: Router,
+    private messageService: MessageService,
+    private modalService: ModalService
+  ) { }
 
 
   ngOnInit(): void {
@@ -41,14 +46,23 @@ export class HomeComponent implements OnInit {
     this.webSocketService.message$.subscribe((message: any) => {
       if (!message?.body) return
       const msg = {
-        content : message.body,
-        sender_id : "0"
+        content: message.body,
+        sender_id: "0"
       }
       this.messages.push(msg);
     })
+
+    this.webSocketService.request$.subscribe((req: any) => {
+
+      if (req && req.body && req.body.trim() !== '') {
+        this.openFriendRequest(req.body)
+
+      }
+    })
+
     this.getChatrooms();
     this.getMessages();
-    
+
 
   }
 
@@ -57,9 +71,14 @@ export class HomeComponent implements OnInit {
     return this.userService.getUserId() ? this.userService.getUserId() : sessionStorage.getItem("id");
   }
 
+
+  getUserName() {
+    return this.userService.getUsername() ? this.userService.getUsername() : sessionStorage.getItem("username");
+  }
+
   signOff(): void {
-      sessionStorage.clear();
-      this.router.navigate(["/login"])
+    sessionStorage.clear();
+    this.router.navigate(["/login"])
   }
 
   getChatrooms() {
@@ -79,8 +98,9 @@ export class HomeComponent implements OnInit {
   getMessages() {
     const id = this.getIdChatRoom() || sessionStorage.getItem('idChatRoom')
     if (!id) {
-      console.log("m outtt",id)
-      return}
+      console.log("m outtt", id)
+      return
+    }
     this.chatRoomService.getMessages(id).subscribe((res: Array<Message>) => {
       console.log(res);
       if (res) {
@@ -92,7 +112,7 @@ export class HomeComponent implements OnInit {
     )
   }
 
-  setChatRoom(id: string , friend_username : string) {
+  setChatRoom(id: string, friend_username: string) {
     sessionStorage.setItem("idChatRoom", id);
     sessionStorage.setItem("friend_username", friend_username);
     this.chatRoomService.setIdChatRoom(id);
@@ -100,7 +120,7 @@ export class HomeComponent implements OnInit {
   }
 
   getIdChatRoom() {
-    return this.chatRoomService.getIdChatRoom() || sessionStorage.getItem('idChatRoom') ;
+    return this.chatRoomService.getIdChatRoom() || sessionStorage.getItem('idChatRoom');
   }
 
 
@@ -124,32 +144,32 @@ export class HomeComponent implements OnInit {
   //   });
   // }
 
-    send(event: any, message: string) {
-      event.preventDefault();
-      const username = sessionStorage.getItem("friend_username");
-      const content = message.trim()
-      const id = this.getUserId();
-      const roomId = this.getIdChatRoom();
-      if (!username || !content || !id || !roomId) return
-      this.webSocketService.sendMsg(username, content)
-      const msgDTO = {
-        sender_id : id,
-        content : content
-      }
-      this.messages.push(msgDTO)
-      this.messageService.saveMessage(roomId,msgDTO).subscribe((res) => {
-        console.log("message saved to DB")
-      });
+  send(event: any, message: string) {
+    event.preventDefault();
+    const username = sessionStorage.getItem("friend_username");
+    const content = message.trim()
+    const id = this.getUserId();
+    const roomId = this.getIdChatRoom();
+    if (!username || !content || !id || !roomId) return
+    this.webSocketService.sendMsg(username, content)
+    const msgDTO = {
+      sender_id: id,
+      content: content
     }
+    this.messages.push(msgDTO)
+    this.messageService.saveMessage(roomId, msgDTO).subscribe((res) => {
+      console.log("message saved to DB")
+    });
+  }
 
 
   search(event: any) {
 
     if (event.target.value && event.target.value.trim() != '') {
-      this.userService.searchUser(event.target.value).subscribe((res : Array<User>) => {
+      this.userService.searchUser(event.target.value).subscribe((res: Array<User>) => {
         if (res) {
           this.searchResult = res;
-          this.showresults = true ;
+          this.showresults = true;
         } else {
           console.log('ser t7wa');
 
@@ -168,7 +188,25 @@ export class HomeComponent implements OnInit {
 
   selectUser(user: User) {
     this.searchInput.nativeElement.value = user.username
-    this.showresults = false ;
+    this.showresults = false;
+    this.selecttedUser = user.username;
+  }
+
+  openFriendRequest(usr: string) {
+    this.modalService.openModal(usr).then(
+      (result) => {
+        
+
+      }
+    );
+  }
+
+
+  sendRequest($event: any) {
+    event?.preventDefault();
+
+    this.webSocketService.sendRequest(this.getUserName()!, this.selecttedUser);
+
   }
 
 }

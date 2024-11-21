@@ -63,6 +63,7 @@ export class LoginComponent implements OnInit {
           if (res.id) {
             sessionStorage.setItem("id",res.id)
             sessionStorage.setItem("username",res.username)
+            this.userService.setUsername(res.username)
             this.userService.setUserId(res.id)
           }
           this.router.navigate(["/home"])

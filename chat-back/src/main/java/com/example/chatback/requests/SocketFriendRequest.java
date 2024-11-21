@@ -9,8 +9,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @AllArgsConstructor
-public class SocketMessageRequest {
+public class SocketFriendRequest {
     private String username;
-    private String content;
-
+    private String myname;
 }

@@ -18,6 +18,11 @@ export class WebSocketService {
   message$ = this.newMessageBehavior.asObservable() ; 
 
 
+
+ private newRequestBehavior = new BehaviorSubject<string>('');
+
+  request$ = this.newRequestBehavior.asObservable() ; 
+
   connect() : void {
     const username = sessionStorage.getItem("username")
     const socket = new SockJS(WEB_SOCKET_URL + `?username=${username}`);  // Establish a SockJS connection
@@ -33,6 +38,14 @@ export class WebSocketService {
         console.log('Message received: ', message.body);
 
       this.newMessageBehavior.next(message)
+
+      });
+
+
+     this.stompClient.subscribe('/user/queue/request', (request: any) => {
+        console.log('Message received: ', request.body);
+
+      this.newRequestBehavior.next(request)
 
       });
  
@@ -52,6 +65,15 @@ export class WebSocketService {
       content : content
     }
     this.stompClient.send("/app/hello", {}, JSON.stringify(msg));
+  }
+
+
+  sendRequest(myname : string , firndsname : string) {
+    const req = {
+      username : firndsname,
+      myname : myname
+    }
+    this.stompClient.send("/app/send-request", {}, JSON.stringify(req));
   }
 
 }

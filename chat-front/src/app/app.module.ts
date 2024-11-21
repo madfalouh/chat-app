@@ -12,12 +12,14 @@ import { ConnectionService } from './services/connection.service';
 import { HomeComponent } from './views/home/home.component';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FriendRequestModalComponent } from './modals/friend-request-modal/friend-request-modal.component';
 @NgModule({
     declarations: [
         AppComponent ,
         LoginComponent ,
         SignupComponent ,
-        HomeComponent
+        HomeComponent ,
+    FriendRequestModalComponent ,  
     ],
     imports: [
         RouterOutlet,

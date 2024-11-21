@@ -1,5 +1,6 @@
 package com.example.chatback.Controllers;
 
+import com.example.chatback.requests.SocketFriendRequest;
 import com.example.chatback.requests.SocketMessageRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,14 @@ public class SocketController {
         String username = payload.getUsername();
         SocketController.log.debug("my username is " + username);
         simpMessagingTemplate.convertAndSendToUser(username, "/queue/messages", message);
+    }
+
+    @MessageMapping("/send-request")
+    public void sendRequest(SimpMessageHeaderAccessor sha, @Payload SocketFriendRequest payload) {
+        String username = payload.getUsername();
+        String myName = payload.getMyname() ;
+        SocketController.log.debug("my username is " + username + " my name is " + myName);
+        simpMessagingTemplate.convertAndSendToUser(username, "/queue/request", myName);
     }
 
     
