@@ -23,6 +23,12 @@ export class WebSocketService {
 
   request$ = this.newRequestBehavior.asObservable() ; 
 
+  private newTypingBehavior = new BehaviorSubject<string>('');
+  isTyping$ = this.newTypingBehavior.asObservable() ; 
+
+  private newRequestAcceptedBehavior = new BehaviorSubject<string>('');
+  requestAccepted$ = this.newRequestAcceptedBehavior.asObservable() ; 
+
   connect() : void {
     const username = sessionStorage.getItem("username")
     const socket = new SockJS(WEB_SOCKET_URL + `?username=${username}`);  // Establish a SockJS connection
@@ -35,19 +41,21 @@ export class WebSocketService {
       // Subscribe to a topic (e.g., /topic/chat) to listen for messages
 
      this.stompClient.subscribe('/user/queue/messages', (message: any) => {
-        console.log('Message received: ', message.body);
-
       this.newMessageBehavior.next(message)
-
       });
 
 
      this.stompClient.subscribe('/user/queue/request', (request: any) => {
-        console.log('Message received: ', request.body);
-
       this.newRequestBehavior.next(request)
-
       });
+
+      this.stompClient.subscribe('/user/queue/requestAccepted', (request: any) => {
+        this.newRequestAcceptedBehavior.next(request)
+        });
+
+      this.stompClient.subscribe('/user/queue/typing', (isTyping : any) => {
+        this.newTypingBehavior.next(isTyping)
+      })
  
     }, (error: any) => {
       console.error('Connection error: ', error);
@@ -76,4 +84,19 @@ export class WebSocketService {
     this.stompClient.send("/app/send-request", {}, JSON.stringify(req));
   }
 
+  acceptRequest(username : string) {
+    const req = {
+      friend_name : username
+    }
+    this.stompClient.send("/app/requestAccepted", {}, JSON.stringify(req));
+  }
+
+  sendIsTyping(username : string ,friend : string, isTyping : boolean) {
+    const msg = {
+      username : username,
+      typer : friend,
+      isTyping : isTyping
+    }
+    this.stompClient.send("/app/typing", {}, JSON.stringify(msg));
+  }
 }

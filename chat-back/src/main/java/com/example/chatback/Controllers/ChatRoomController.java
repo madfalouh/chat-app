@@ -30,8 +30,8 @@ public class ChatRoomController {
         List<ChatRoomDto> chatRooms = chatRoomService.getChatRoomOfTheUsers(id);
         if (chatRooms != null && !chatRooms.isEmpty()) {
             return  ResponseEntity.ok(chatRooms) ;
-        }else {
-            return  ResponseEntity.status(401).body(null) ;
+        }   else {
+            return  ResponseEntity.ok(null) ;
         }
     }
 

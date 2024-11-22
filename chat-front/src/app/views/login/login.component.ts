@@ -55,8 +55,6 @@ export class LoginComponent implements OnInit {
 
     if (this.loginForm.valid) {
       const { username, password } = this.loginForm.value;
-      console.log("credentials :", username, password)
-
       this.loginService.login({ username, password }).subscribe((res: User) => {
         console.log(res);
         if (res) {
@@ -67,8 +65,6 @@ export class LoginComponent implements OnInit {
             this.userService.setUserId(res.id)
           }
           this.router.navigate(["/home"])
-        } else {
-          console.log("ser t7wa");
         }
       })
 

@@ -73,12 +73,8 @@ export class SignupComponent implements OnInit {
           if (res) {
             this.router.navigate(["/login"])
             alert("Accounted created !!")
-          } else {
-            console.log("ser t7wa");
           }
         })
-      } else {
-        console.log("Passwords should match")
       }
     }
   }

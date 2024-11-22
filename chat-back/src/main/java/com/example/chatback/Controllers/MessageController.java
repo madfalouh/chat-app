@@ -29,7 +29,7 @@ public class MessageController {
         if (messages != null && !messages.isEmpty()) {
             return  ResponseEntity.ok(messages) ;
         }else {
-            return  ResponseEntity.status(401).body(null) ;
+            return  ResponseEntity.ok(null) ;
         }
     }
 

@@ -10,6 +10,7 @@ import { User } from '../models/user.type';
 export class UserService {
   userId!: string;
   username! : string;
+  friendUsername! : string;
 
   constructor(private http: HttpClient) {
     
@@ -27,6 +28,13 @@ export class UserService {
   }
   setUsername(username : string) : void {
     this.username = username
+  }
+
+  getFriendUsername() : string {
+    return this.friendUsername
+  }
+  setFriendUsername(username : string) : void {
+    this.friendUsername = username
   }
 
   searchUser(username: string ): Observable<User[]> {

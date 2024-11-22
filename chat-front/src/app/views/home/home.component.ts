@@ -25,11 +25,15 @@ export class HomeComponent implements OnInit {
 
   searchResult: Array<User> = []
 
+  usersTyping : any = {}
+
   selecttedUser!: string;
 
   showresults: boolean = false
 
   @ViewChild('SearchInput') searchInput!: ElementRef;
+
+  @ViewChild('MessageInput') messageInput!: ElementRef;
 
 
   constructor(private chatRoomService: ChatRoomService,
@@ -53,11 +57,21 @@ export class HomeComponent implements OnInit {
     })
 
     this.webSocketService.request$.subscribe((req: any) => {
-      console.log(req);
-
       if (req && req.body && req.body.trim() !== '') {
         this.openFriendRequest(req.body)
+      }
+    })
 
+    this.webSocketService.isTyping$.subscribe((req : any)=> {
+      if (req && req.body !== null) {
+        const obj = JSON.parse(req.body)
+        this.usersTyping[obj.typer] = obj.typing
+      }
+    })
+
+    this.webSocketService.requestAccepted$.subscribe((req : any)=> {
+      if (req && req.body !== null) {
+        this.getChatrooms()
       }
     })
 
@@ -77,6 +91,12 @@ export class HomeComponent implements OnInit {
     return this.userService.getUsername() ? this.userService.getUsername() : sessionStorage.getItem("username");
   }
 
+  getFriendUserName() {
+    const friend = this.userService.getFriendUsername() ? this.userService.getFriendUsername() : sessionStorage.getItem("friend_username");
+    if (!friend) return ""
+    return friend
+  }
+
   signOff(): void {
     sessionStorage.clear();
     this.router.navigate(["/login"])
@@ -86,28 +106,21 @@ export class HomeComponent implements OnInit {
     const id = this.getUserId();
     if (!id) return
     this.chatRoomService.getFriends(id).subscribe((res: Array<ChatRoom>) => {
-      console.log(res);
-      if (res) {
-        this.chatRooms = res;
-      } else {
-        console.log("ser t7wa");
+        if (res) {
+          this.chatRooms = res;
+        }
       }
-    }
     )
   }
 
   getMessages() {
     const id = this.getIdChatRoom() || sessionStorage.getItem('idChatRoom')
     if (!id) {
-      console.log("m outtt", id)
       return
     }
     this.chatRoomService.getMessages(id).subscribe((res: Array<Message>) => {
-      console.log(res);
       if (res) {
         this.messages = res;
-      } else {
-        console.log("ser t7wa");
       }
     }
     )
@@ -138,9 +151,6 @@ export class HomeComponent implements OnInit {
   //   this.messageService.saveMessage(id, message).subscribe((res: boolean) => {
   //     if (res) {
   //       // TODO   
-  //     } else {
-  //       console.log(" ser t7wa ");
-
   //     }
   //   });
   // }
@@ -161,6 +171,7 @@ export class HomeComponent implements OnInit {
     this.messageService.saveMessage(roomId, msgDTO).subscribe((res) => {
       console.log("message saved to DB")
     });
+    this.messageInput.nativeElement.value = '';
   }
 
 
@@ -171,11 +182,7 @@ export class HomeComponent implements OnInit {
         if (res) {
           this.searchResult = res;
           this.showresults = true;
-        } else {
-          console.log('ser t7wa');
-
-        }
-
+        } 
       })
 
     } else if (event.target.value.trim() == '' && this.searchResult.length > 0) {
@@ -187,10 +194,10 @@ export class HomeComponent implements OnInit {
   }
 
 
-  selectUser(user: User) {
-    this.searchInput.nativeElement.value = user.username
+  selectUser(username: string) {
+    this.searchInput.nativeElement.value = username
     this.showresults = false;
-    this.selecttedUser = user.username;
+    this.selecttedUser = username;
   }
 
   openFriendRequest(usr: string) {
@@ -198,14 +205,16 @@ export class HomeComponent implements OnInit {
     if (!this.modalService.modalisOpen) {
       this.modalService.openModal(usr).then(
         (result) => {
-          this.chatRoomService.saveChatRoom(usr, this.getUserName()!).subscribe((res) => {
+          this.chatRoomService.saveChatRoom(usr, this.getUserName()!).subscribe((res : any) => {
             this.modalService.modalisOpen = false;
-            console.log(res);
- 
+            this.chatRooms.push({
+              friend_username : result.friendName,
+              idChatRoom : res.id
+            })
+            this.webSocketService.acceptRequest(result.friendName)
           },
             (err) => {
-              console.log(err);
-              
+              console.log(err);  
               this.modalService.modalisOpen = false;
 
             }
@@ -217,12 +226,31 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  // isUserAlreadyFriend(): boolean {
+  //   return !this.chatRooms.every((item) => {
+  //     item.friend_username !== this.selecttedUser
+  //   })
+  // }
 
-  sendRequest($event: any) {
+
+  sendRequest(event: any, username : string) {
     event?.preventDefault();
-
+    this.selectUser(username);
+    for (const item of this.chatRooms) {
+      if (item.friend_username === this.selecttedUser) {
+        this.setChatRoom(item.idChatRoom,item.friend_username);
+        return
+      }
+    }
     this.webSocketService.sendRequest(this.getUserName()!, this.selecttedUser);
 
   }
 
+  sendIsTyping(message: string) {
+    const isTyping = message !== ""
+    const username = sessionStorage.getItem("friend_username");
+    const typer = sessionStorage.getItem("username")
+    if (!username || !typer) return
+    this.webSocketService.sendIsTyping(username,typer, isTyping)
+  }
 }
